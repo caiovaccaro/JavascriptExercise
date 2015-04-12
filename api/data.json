@@ -1,0 +1,87 @@
+{
+  "menu": [
+    {
+      "text": "Getting Started",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "About this document",
+          "route": "about",
+          "path": "about-this-document",
+          "status": "enabled"
+        },
+        {
+          "text": "About this document",
+          "route": "about",
+          "path": "about-this-document",
+          "status": "enabled"
+        }
+      ]
+    },
+    {
+      "text": "Styles",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "Typography",
+          "route": "typography",
+          "path": "typography",
+          "status": "enabled"
+        },
+        {
+          "text": "Color",
+          "route": "color",
+          "path": "color",
+          "status": "enabled"
+        }
+      ]
+    }
+  ]
+}
+
+Getting Started
+    About this document
+    Updates
+Styles
+    Typography
+    Color
+    Logos
+    Iconography
+    Imagery
+    Shapes
+Building blocks
+    Grids
+    Header
+    Footer
+    Navigation
+    UI Elements
+        Buttons
+          Primary
+          Secondary
+        Text Fields
+        Dropdowns
+        Toggles
+        Sliders
+        Scrolls
+        Spinners
+    Modules
+        Heroes
+        Editorial
+        Forms
+        Carousels
+        Drawers
+        Dialogs
+        Accordions
+        Cards
+          Social
+          Products
+        Wizards
+        Notifications
+        Tool tips
+        Tables
+        Touts
+Layouts
+    Standard Marketing Layout
+    Functional
+Flows
+Downloads
