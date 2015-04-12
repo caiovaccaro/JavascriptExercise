@@ -1,5 +1,7 @@
 # JavascriptExercise
 
+This is a growing exercise, it will get more shape and steps as the current ones get completed.
+
 Create an application that:
 
 - Loads data from a .json file
