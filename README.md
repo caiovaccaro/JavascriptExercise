@@ -13,7 +13,7 @@ Create an application that:
 - The corresponding view consists only of a page title
 
 
-#### You can structure your application in one of the following ways:
+##### You can structure your application in one of the following ways:
 
 - No frameworks, but Object Literal modules
 - No frameworks, but AMD modules using RequireJS
