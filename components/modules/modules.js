@@ -1,1 +1,1 @@
-import './menu.jsx!'
+import './menu.jsx!';
