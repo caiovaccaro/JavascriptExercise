@@ -1,0 +1,50 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-style: 16px;
+	line-height: 21px;
+	margin: 0;
+	padding: 0;
+}
+
+#menu {
+	width: 30%;
+	float: left;
+	padding: 40px;
+	border-right: 1px solid #ccc;
+}
+
+#menu ul {
+	margin: 5px 0 10px;
+}
+
+#menu a.active {
+	color: Navy;
+}
+
+#menu .dropdown > a {
+	color: #999;
+	cursor: default;
+}
+
+#menu .dropdown > a:hover {
+	opacity: 1;
+}
+
+#content {
+	width: 70%;
+	float: left;
+	padding: 20px 40px;
+}
+
+a, a:active, a:visited {
+	color: DodgerBlue;
+	text-decoration: none;
+}
+
+a:hover {
+	opacity: 0.7;
+}
