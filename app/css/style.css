@@ -1,0 +1,32 @@
+*{
+	box-sizing: border-box;
+}
+
+html, body, .ember-view, .sidebar{
+	height: 100%;
+}
+.sidebar, .content{
+	float: left;
+	overflow: scroll;
+}
+.sidebar{
+	position: relative;
+	z-index: 2;
+	background-color: silver;
+	width: 300px;
+}
+.sidebar ul{
+	padding-left: 30px;
+}
+.sidebar a{
+	color: blue;
+}
+.sidebar a.active{
+	font-weight: bold;
+	color: black;
+}
+.content{
+	width: 100%;
+	margin-left: -300px;
+	padding-left: 300px;
+}

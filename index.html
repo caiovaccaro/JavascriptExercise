@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>JavascriptExercise</title>
+	<link rel="stylesheet" href="/app/css/normalize.css">
+	<link rel="stylesheet" href="/app/css/style.css">
+</head>
+<body>
+	<script type="text/x-handlebars" id="page">
+		<h1>{{model.text}}</h1>
+	</script>
+	<script type="text/x-handlebars" id="menu">
+		{{#each item in model}}
+			<li>
+				{{#if item.url}}
+					{{#link-to 'page' item.url}}
+						{{item.text}}
+					{{/link-to}}
+				{{else}}
+					{{item.text}}
+				{{/if}}
+				{{#if item.menu}}
+					<ul>{{render "menu" item.menu}}</ul>
+				{{/if}}
+			</li>
+		{{/each}}
+		
+	</script>
+	<script type="text/x-handlebars" id="index">
+		<h1>{{model.text}}</h1>
+	</script>
+	<script type="text/x-handlebars">
+		<aside class="sidebar">
+			<nav>
+				<ul>
+					<li>
+						{{#link-to 'index'}}
+							home
+						{{/link-to}}
+					</li>
+					{{partial "menu"}}
+				</ul>
+			</nav>
+		</aside>
+		<section class="content">
+    		{{outlet}}
+		</section>
+	</script>
+
+	<script src="/app/js/libs/jquery-1.10.2.js"></script>
+	<script src="/app/js/libs/ember-template-compiler.js"></script>
+	<script src="/app/js/libs/ember.debug.js"></script>
+	<script src="/app/js/model.js"></script>
+	<script src="/app/js/app.js"></script>
+</body>
+</html>

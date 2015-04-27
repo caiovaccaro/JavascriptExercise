@@ -1,0 +1,12 @@
+{
+  "name": "JavascripExercise",
+  "description": "a simple growing javascrip exercise.",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leonardodino/JavascriptExercise"
+  },
+  "dependencies": {
+    "spa-server": "^0.1.0"
+  }
+}
