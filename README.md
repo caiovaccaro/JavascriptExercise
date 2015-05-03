@@ -11,10 +11,10 @@ This is a growing exercise, it will get more shape and steps as the current ones
 Modify your application in a way that:
 
 - Loads the menu and the first page data in a Promise and only render the index page after it has been resolved
-- Use a filter high-order function in to just display enabled menu items
+- Use a filter high-order function in order to just display enabled menu items
 - When a user clicks a link, the corresponding view appear
 - When a user clicks a link, this link (and only this link) should be active (visual distinction)
-- The corresponding view should follow the example template and filled with the correspondent data.json file
+- The corresponding view should use the correspondent data.json file
 
 
 #### Dependencies
