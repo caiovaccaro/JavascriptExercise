@@ -2,7 +2,7 @@ App = Ember.Application.create();
 
 App.Router.map(function() {
 	// this.route('page', { path: '/page/:page_url' });
-	this.route('page', { path: '/page/*page_url' }); //supports slashed urls
+	this.route('page', { path: '/*page_url' }); //supports slashed urls
 });
 
 App.Router.reopen({
