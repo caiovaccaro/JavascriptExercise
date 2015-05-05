@@ -1,0 +1,14 @@
+{{#each item in menu}}
+	<li>
+		{{#if item.url}}
+			{{#link-to 'page' item.url}}
+				{{item.text}}
+			{{/link-to}}
+		{{else}}
+			{{item.text}}
+		{{/if}}
+		{{#if item.menu}}
+			<ul>{{render "menu" item.menu}}</ul>
+		{{/if}}
+	</li>
+{{/each}}

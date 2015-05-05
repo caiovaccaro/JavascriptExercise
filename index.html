@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>JavascriptExercise</title>
-	<link rel="stylesheet" href="/app/css/normalize.css">
-	<link rel="stylesheet" href="/app/css/style.css">
+	<link rel="stylesheet" href="/public/css/normalize.css">
+	<link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
 	<script type="text/x-handlebars" id="page">
@@ -25,7 +25,6 @@
 				{{/if}}
 			</li>
 		{{/each}}
-		
 	</script>
 	<script type="text/x-handlebars" id="index">
 		<h1>{{model.text}}</h1>
@@ -48,10 +47,12 @@
 		</section>
 	</script>
 
-	<script src="/app/js/libs/jquery-1.10.2.js"></script>
-	<script src="/app/js/libs/ember-template-compiler.js"></script>
-	<script src="/app/js/libs/ember.debug.js"></script>
-	<script src="/app/js/model.js"></script>
-	<script src="/app/js/app.js"></script>
+	<script src="/public/js/lodash.js"></script>
+	<script src="/public/js/jquery-1.10.2.js"></script>
+	<script src="/public/js/ember-template-compiler.js"></script>
+	<script src="/public/js/ember.debug.js"></script>
+	
+	<script src="/app/models/menu.js"></script>
+	<script src="/app/app.js"></script>
 </body>
 </html>

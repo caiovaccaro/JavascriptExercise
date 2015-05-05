@@ -54,7 +54,7 @@ function getModel(){
 			return context.Model = ModelFactoy(data);
 		}
 
-		return Promise.resolve(getJSON('/api/data.json'))
+		return Promise.resolve(getJSON('/api/menu/data.json'))
 			.then(ModelSetter)
 	})(window, jQuery.getJSON)
 };
