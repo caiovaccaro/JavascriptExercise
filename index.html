@@ -8,7 +8,7 @@
 </head>
 <body>
 	<script type="text/x-handlebars" id="page">
-		<h1>{{model.text}}</h1>
+		<h1>{{model.title}}</h1>
 	</script>
 	<script type="text/x-handlebars" id="menu">
 		{{#each item in model}}
@@ -27,7 +27,7 @@
 		{{/each}}
 	</script>
 	<script type="text/x-handlebars" id="index">
-		<h1>{{model.text}}</h1>
+		<h1>{{model.title}}</h1>
 	</script>
 	<script type="text/x-handlebars">
 		<aside class="sidebar">
@@ -38,7 +38,7 @@
 							home
 						{{/link-to}}
 					</li>
-					{{partial "menu"}}
+					{{render "menu" model}}
 				</ul>
 			</nav>
 		</aside>
@@ -47,12 +47,24 @@
 		</section>
 	</script>
 
+	<!-- TODO: implement sane project framework -->
 	<script src="/public/js/lodash.js"></script>
 	<script src="/public/js/jquery-1.10.2.js"></script>
 	<script src="/public/js/ember-template-compiler.js"></script>
 	<script src="/public/js/ember.debug.js"></script>
 	
-	<script src="/app/models/menu.js"></script>
+	<script src="/app/models/helper.js"></script>
+	
 	<script src="/app/app.js"></script>
+	
+	<script src="/app/models/index.js"></script>
+	<script src="/app/routes/index.js"></script>
+	
+	<script src="/app/models/menu.js"></script>
+	<script src="/app/routes/application.js"></script>
+	
+	<script src="/app/models/page.js"></script>
+	<script src="/app/routes/page.js"></script>
+	
 </body>
 </html>
