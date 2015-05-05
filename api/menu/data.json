@@ -1,0 +1,52 @@
+{
+  "menu": [
+    {
+      "text": "Discover",
+      "route": "discover",
+      "path": "discover",
+      "status": "enabled"
+    },
+    {
+      "text": "Activity",
+      "route": "activity",
+      "path": "activity",
+      "status": "enabled"
+    },
+    {
+      "text": "My Music",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "Playlist 1",
+          "route": "playlist",
+          "path": "playlist/1",
+          "status": "disabled"
+        },
+        {
+          "text": "Playlist 2",
+          "route": "playlist",
+          "path": "playlist/2",
+          "status": "disabled"
+        }
+      ]
+    },
+    {
+      "text": "Friends",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "All",
+          "route": "friends",
+          "path": "friends/all",
+          "status": "disabled"
+        },
+        {
+          "text": "Invite",
+          "route": "friends",
+          "path": "friends/invite",
+          "status": "disabled"
+        }
+      ]
+    }
+  ]
+}
