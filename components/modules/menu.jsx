@@ -65,6 +65,6 @@ var Menu = React.createClass({
 });
 
 React.render(
-  <Menu url="api/data.json"/>,
+  <Menu url="api/menu/data.json"/>,
   document.getElementById('menu')
 );
