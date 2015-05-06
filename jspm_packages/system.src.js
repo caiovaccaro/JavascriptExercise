@@ -1,5 +1,5 @@
 /*
- * SystemJS v0.13.2
+ * SystemJS v0.11.3
  */
 
 (function($__global) {
@@ -73,124 +73,6 @@ $__global.upgradeSystemLoader = function() {
 
   
 /*
- * SystemJS Core
- * Code should be vaguely readable
- * 
- */
-var originalSystem = $__global.System.originalSystem;
-function core(loader) {
-  /*
-    __useDefault
-    
-    When a module object looks like:
-    newModule(
-      __useDefault: true,
-      default: 'some-module'
-    })
-
-    Then importing that module provides the 'some-module'
-    result directly instead of the full module.
-
-    Useful for eg module.exports = function() {}
-  */
-  var loaderImport = loader['import'];
-  loader['import'] = function(name, options) {
-    return loaderImport.call(this, name, options).then(function(module) {
-      return module.__useDefault ? module['default'] : module;
-    });
-  }
-
-  // support the empty module, as a concept
-  loader.set('@empty', loader.newModule({}));
-
-  // include the node require since we're overriding it
-  if (typeof require != 'undefined')
-    loader._nodeRequire = require;
-
-  /*
-    Config
-    Extends config merging one deep only
-
-    loader.config({
-      some: 'random',
-      config: 'here',
-      deep: {
-        config: { too: 'too' }
-      }
-    });
-
-    <=>
-
-    loader.some = 'random';
-    loader.config = 'here'
-    loader.deep = loader.deep || {};
-    loader.deep.config = { too: 'too' };
-  */
-  loader.config = function(cfg) {
-    for (var c in cfg) {
-      var v = cfg[c];
-      if (typeof v == 'object' && !(v instanceof Array)) {
-        this[c] = this[c] || {};
-        for (var p in v)
-          this[c][p] = v[p];
-      }
-      else
-        this[c] = v;
-    }
-  }
-
-  // override locate to allow baseURL to be document-relative
-  var baseURI;
-  if (typeof window == 'undefined' &&
-      typeof WorkerGlobalScope == 'undefined') {
-    baseURI = 'file:' + process.cwd() + '/';
-  }
-  // Inside of a Web Worker
-  else if(typeof window == 'undefined') {
-    baseURI = loader.global.location.href;
-  }
-  else {
-    baseURI = document.baseURI;
-    if (!baseURI) {
-      var bases = document.getElementsByTagName('base');
-      baseURI = bases[0] && bases[0].href || window.location.href;
-    }
-  }
-
-  var loaderLocate = loader.locate;
-  var normalizedBaseURL;
-  loader.locate = function(load) {
-    if (this.baseURL != normalizedBaseURL) {
-      normalizedBaseURL = toAbsoluteURL(baseURI, this.baseURL);
-
-      if (normalizedBaseURL.substr(normalizedBaseURL.length - 1, 1) != '/')
-        normalizedBaseURL += '/';
-      this.baseURL = normalizedBaseURL;
-    }
-
-    return Promise.resolve(loaderLocate.call(this, load));
-  }
-
-  function applyExtensions(extensions, loader) {
-    loader._extensions = [];
-    for(var i = 0, len = extensions.length; i < len; i++) {
-      extensions[i](loader);
-    }
-  }
-
-  loader._extensions = loader._extensions || [];
-  loader._extensions.push(core);
-
-  loader.clone = function() {
-    var originalLoader = this;
-    var loader = new LoaderPolyfill(originalSystem);
-    loader.baseURL = originalLoader.baseURL;
-    loader.paths = { '*': '*.js' };
-    applyExtensions(originalLoader._extensions, loader);
-    return loader;
-  };
-}
-/*
  * Meta Extension
  *
  * Sets default metadata on a load record (load.metadata) from
@@ -234,8 +116,6 @@ function meta(loader) {
   var metaPartRegEx = /\/\*.*\*\/|\/\/[^\n]*|"[^"]+"\s*;?|'[^']+'\s*;?/g;
 
   loader.meta = {};
-  loader._extensions = loader._extensions || [];
-  loader._extensions.push(meta);
 
   function setConfigMeta(loader, load) {
     var meta = loader.meta && loader.meta[load.name];
@@ -307,11 +187,8 @@ function meta(loader) {
 function register(loader) {
   if (typeof indexOf == 'undefined')
     indexOf = Array.prototype.indexOf;
-  if (typeof __eval == 'undefined' || typeof document != 'undefined' && !document.addEventListener)
+  if (typeof __eval == 'undefined')
     __eval = 0 || eval; // uglify breaks without the 0 ||
-
-  loader._extensions = loader._extensions || [];
-  loader._extensions.push(register);
 
   // define exec for easy evaluation of a load record (load.name, load.source, load.address)
   // main feature is source maps support handling
@@ -365,7 +242,7 @@ function register(loader) {
   // loader.register sets loader.defined for declarative modules
   var anonRegister;
   var calledRegister;
-  function registerModule(name, deps, declare, execute) {
+  function register(name, deps, declare, execute) {
     if (typeof name != 'string') {
       execute = declare;
       declare = deps;
@@ -399,7 +276,7 @@ function register(loader) {
     if (name) {
       register.name = name;
       // we never overwrite an existing define
-      if (!(name in loader.defined))
+      if (!loader.defined[name])
         loader.defined[name] = register; 
     }
     // anonymous register
@@ -444,7 +321,7 @@ function register(loader) {
     if (loader.register)
       return;
 
-    loader.register = registerModule;
+    loader.register = register;
 
     if (!loader.defined)
       loader.defined = {};
@@ -489,7 +366,7 @@ function register(loader) {
       if (depEntry.groupIndex === undefined || depEntry.groupIndex < depGroupIndex) {
         
         // if already in a group, remove from the old group
-        if (depEntry.groupIndex !== undefined) {
+        if (depEntry.groupIndex) {
           groups[depEntry.groupIndex].splice(indexOf.call(groups[depEntry.groupIndex], depEntry), 1);
 
           // if the old group is empty, then we have a mixed depndency cycle
@@ -506,10 +383,6 @@ function register(loader) {
 
   function link(name, loader) {
     var startEntry = loader.defined[name];
-
-    // skip if already linked
-    if (startEntry.module)
-      return;
 
     startEntry.groupIndex = 0;
 
@@ -690,7 +563,7 @@ function register(loader) {
     var entry = loader.defined[moduleName];
 
     // if already seen, that means it's an already-evaluated non circular dependency
-    if (!entry || entry.evaluated || !entry.declarative)
+    if (entry.evaluated || !entry.declarative)
       return;
 
     // this only applies to declarative modules which late-execute
@@ -732,7 +605,7 @@ function register(loader) {
 
   var loaderTranslate = loader.translate;
   loader.translate = function(load) {
-    this.register = registerModule;
+    this.register = register;
 
     this.__exec = exec;
 
@@ -786,13 +659,14 @@ function register(loader) {
       anonRegister = null;
       calledRegister = false;
 
-      var curSystem = loader.global.System;
+      var System = loader.global.System = loader.global.System || loader;
 
-      loader.global.System = loader;
+      var curRegister = System.register;
+      System.register = register;
 
       loader.__exec(load);
 
-      loader.global.System = curSystem;
+      System.register = curRegister;
 
       if (anonRegister)
         entry = anonRegister;
@@ -856,65 +730,133 @@ function register(loader) {
   }
 }
 /*
- * Extension to detect ES6 and auto-load Traceur or Babel for processing
+ * SystemJS Core
+ * Code should be vaguely readable
+ * 
  */
-function es6(loader) {
+function core(loader) {
 
-  loader._extensions.push(es6);
-
-  var transpiler, transpilerModule, transpilerRuntimeModule, transpilerRuntimeGlobal;
-
-  var isBrowser = typeof window != 'undefined';
-
-  function setTranspiler(name) {
-    transpiler = name;
-    transpilerModule = '@' + transpiler;
-    transpilerRuntimeModule = transpilerModule + (transpiler == 'babel' ? '-helpers' : '-runtime');
-    transpilerRuntimeGlobal = transpiler == 'babel' ? transpiler + 'Helpers' : '$' + transpiler + 'Runtime';
-
-    // auto-detection of paths to loader transpiler files
-    var scriptBase;
-    if ($__curScript && $__curScript.src)
-      scriptBase = $__curScript.src.substr(0, $__curScript.src.lastIndexOf('/') + 1);
-    else
-      scriptBase = loader.baseURL + (loader.baseURL.lastIndexOf('/') == loader.baseURL.length - 1 ? '' : '/');
-
-    if (!loader.paths[transpilerModule])
-      loader.paths[transpilerModule] = $__curScript && $__curScript.getAttribute('data-' + loader.transpiler + '-src') || scriptBase + loader.transpiler + '.js';
+  /*
+    __useDefault
     
-    if (!loader.paths[transpilerRuntimeModule])
-      loader.paths[transpilerRuntimeModule] = $__curScript && $__curScript.getAttribute('data-' + transpilerRuntimeModule.substr(1) + '-src') || scriptBase + transpilerRuntimeModule.substr(1) + '.js';
+    When a module object looks like:
+    newModule({
+      __useDefault: true,
+      default: 'some-module'
+    })
+
+    Then importing that module provides the 'some-module'
+    result directly instead of the full module.
+
+    Useful for eg module.exports = function() {}
+  */
+  var loaderImport = loader['import'];
+  loader['import'] = function(name, options) {
+    return loaderImport.call(this, name, options).then(function(module) {
+      return module.__useDefault ? module['default'] : module;
+    });
   }
 
+  // support the empty module, as a concept
+  loader.set('@empty', loader.newModule({}));
+
+  // include the node require since we're overriding it
+  if (typeof require != 'undefined')
+    loader._nodeRequire = require;
+
+  /*
+    Config
+    Extends config merging one deep only
+
+    loader.config({
+      some: 'random',
+      config: 'here',
+      deep: {
+        config: { too: 'too' }
+      }
+    });
+
+    <=>
+
+    loader.some = 'random';
+    loader.config = 'here'
+    loader.deep = loader.deep || {};
+    loader.deep.config = { too: 'too' };
+  */
+  loader.config = function(cfg) {
+    for (var c in cfg) {
+      var v = cfg[c];
+      if (typeof v == 'object' && !(v instanceof Array)) {
+        this[c] = this[c] || {};
+        for (var p in v)
+          this[c][p] = v[p];
+      }
+      else
+        this[c] = v;
+    }
+  }
+
+  // override locate to allow baseURL to be document-relative
+  var baseURI;
+  if (typeof window == 'undefined' &&
+      typeof WorkerGlobalScope == 'undefined') {
+    baseURI = 'file:' + process.cwd() + '/';
+  }
+  // Inside of a Web Worker
+  else if(typeof window == 'undefined') {
+    baseURI = loader.global.location.href;
+  }
+  else {
+    baseURI = document.baseURI;
+    if (!baseURI) {
+      var bases = document.getElementsByTagName('base');
+      baseURI = bases[0] && bases[0].href || window.location.href;
+    }
+  }
+
+  var loaderLocate = loader.locate;
+  var normalizedBaseURL;
+  loader.locate = function(load) {
+    if (this.baseURL != normalizedBaseURL) {
+      normalizedBaseURL = toAbsoluteURL(baseURI, this.baseURL);
+
+      if (normalizedBaseURL.substr(normalizedBaseURL.length - 1, 1) != '/')
+        normalizedBaseURL += '/';
+      this.baseURL = normalizedBaseURL;
+    }
+
+    return Promise.resolve(loaderLocate.call(this, load));
+  }
+
+  // Traceur conveniences
   // good enough ES6 detection regex - format detections not designed to be accurate, but to handle the 99% use case
   var es6RegEx = /(^\s*|[}\);\n]\s*)(import\s+(['"]|(\*\s+as\s+)?[^"'\(\)\n;]+\s+from\s+['"]|\{)|export\s+\*\s+from\s+["']|export\s+(\{|default|function|class|var|const|let|async\s+function))/;
 
+  var traceurRuntimeRegEx = /\$traceurRuntime/;
+
   var loaderTranslate = loader.translate;
   loader.translate = function(load) {
-    // update transpiler info if necessary
-    if (this.transpiler !== transpiler)
-      setTranspiler(this.transpiler);
-
     var loader = this;
 
-    if (load.name == transpilerModule || load.name == transpilerRuntimeModule)
+    if (load.name == '@traceur' || load.name == '@traceur-runtime')
       return loaderTranslate.call(loader, load);
 
     // detect ES6
     else if (load.metadata.format == 'es6' || !load.metadata.format && load.source.match(es6RegEx)) {
       load.metadata.format = 'es6';
 
-      // dynamically load transpiler for ES6 if necessary
-      if (isBrowser && !loader.global[transpiler])
-        return loader['import'](transpilerModule).then(function() {
+      // dynamically load Traceur for ES6 if necessary
+      if (!loader.global.traceur) {
+        return loader['import']('@traceur').then(function() {
           return loaderTranslate.call(loader, load);
         });
+      }
     }
 
-    // dynamically load transpiler runtime if necessary
-    if (isBrowser && !loader.global[transpilerRuntimeGlobal] && load.source.indexOf(transpilerRuntimeGlobal) != -1) {
+    // dynamicallly load Traceur runtime if necessary
+    if (!loader.global.$traceurRuntime && load.source.match(traceurRuntimeRegEx)) {
       var System = $__global.System;
-      return loader['import'](transpilerRuntimeModule).then(function() {
+      return loader['import']('@traceur-runtime').then(function() {
         // traceur runtme annihilates System global
         $__global.System = System;
         return loaderTranslate.call(loader, load);
@@ -924,11 +866,11 @@ function es6(loader) {
     return loaderTranslate.call(loader, load);
   }
 
-  // always load transpiler as a global
+  // always load Traceur as a global
   var loaderInstantiate = loader.instantiate;
   loader.instantiate = function(load) {
     var loader = this;
-    if (isBrowser && (load.name == transpilerModule || load.name == transpilerRuntimeModule)) {
+    if (load.name == '@traceur' || load.name == '@traceur-runtime') {
       loader.__exec(load);
       return {
         deps: [],
@@ -939,7 +881,6 @@ function es6(loader) {
     }
     return loaderInstantiate.call(loader, load);
   }
-
 }
 /*
   SystemJS Global Format
@@ -953,8 +894,6 @@ function es6(loader) {
   See the SystemJS readme global support section for further information.
 */
 function global(loader) {
-
-  loader._extensions.push(global);
 
   function readGlobalProperty(p, value) {
     var pParts = p.split('.');
@@ -1091,7 +1030,6 @@ function global(loader) {
   SystemJS CommonJS Format
 */
 function cjs(loader) {
-  loader._extensions.push(cjs);
 
   // CJS Module Format
   // require('...') || exports[''] = ... || exports.asd = ... || module.exports = ...
@@ -1128,7 +1066,7 @@ function cjs(loader) {
     }
 
     if (load.metadata.format == 'cjs') {
-      load.metadata.deps = load.metadata.deps ? load.metadata.deps.concat(getCJSDeps(load.source)) : getCJSDeps(load.source);
+      load.metadata.deps = load.metadata.deps ? load.metadata.deps.concat(getCJSDeps(load.source)) : load.metadata.deps;
 
       load.metadata.executingRequire = true;
 
@@ -1180,8 +1118,6 @@ function cjs(loader) {
 function amd(loader) {
   // by default we only enforce AMD noConflict mode in Node
   var isNode = typeof module != 'undefined' && module.exports;
-
-  loader._extensions.push(amd);
 
   // AMD Module Format Detection RegEx
   // define([.., .., ..], ...)
@@ -1484,8 +1420,6 @@ function amd(loader) {
 function map(loader) {
   loader.map = loader.map || {};
 
-  loader._extensions.push(map);
-
   // return if prefix parts (separated by '/') match the name
   // eg prefixMatch('jquery/some/thing', 'jquery') -> true
   //    prefixMatch('jqueryhere/', 'jquery') -> false
@@ -1624,8 +1558,6 @@ function plugins(loader) {
   if (typeof indexOf == 'undefined')
     indexOf = Array.prototype.indexOf;
 
-  loader._extensions.push(plugins);
-
   var loaderNormalize = loader.normalize;
   loader.normalize = function(name, parentName, parentAddress) {
     var loader = this;
@@ -1708,7 +1640,7 @@ function plugins(loader) {
         else
           return Promise.resolve(loader.locate(load))
           .then(function(address) {
-            return address.replace(/\.js$/, '');
+            return address.substr(0, address.length - 3);
           });
       });
     }
@@ -1734,7 +1666,7 @@ function plugins(loader) {
     var loader = this;
     if (load.metadata.plugin && load.metadata.plugin.translate)
       return Promise.resolve(load.metadata.plugin.translate.call(loader, load)).then(function(result) {
-        if (typeof result == 'string')
+        if (result)
           load.source = result;
         return loaderTranslate.call(loader, load);
       });
@@ -1765,8 +1697,7 @@ function plugins(loader) {
       return loaderInstantiate.call(loader, load);
   }
 
-}
-/*
+}/*
   System bundles
 
   Allows a bundle module to be specified which will be dynamically 
@@ -1784,8 +1715,6 @@ function plugins(loader) {
 function bundles(loader) {
   if (typeof indexOf == 'undefined')
     indexOf = Array.prototype.indexOf;
-
-  loader._extensions.push(bundles);
 
   // bundles support (just like RequireJS)
   // bundle name is module name of bundle itself
@@ -1825,8 +1754,7 @@ function bundles(loader) {
     }
     return loaderFetch.call(this, load);
   }
-}
-/*
+}/*
   SystemJS Semver Version Addon
   
   1. Uses Semver convention for major and minor forms
@@ -1886,8 +1814,6 @@ function bundles(loader) {
 function versions(loader) {
   if (typeof indexOf == 'undefined')
     indexOf = Array.prototype.indexOf;
-
-  loader._extensions.push(versions);
 
   var semverRegEx = /^(\d+)(?:\.(\d+)(?:\.(\d+)(?:-([\da-z-]+(?:\.[\da-z-]+)*)(?:\+([\da-z-]+(?:\.[\da-z-]+)*))?)?)?)?$/i;
   var numRegEx = /^\d+$/;
@@ -2075,7 +2001,8 @@ function versions(loader) {
 
     // strip the version before applying map config
     var stripVersion, stripSubPathLength;
-    var versionIndex = name.indexOf('!') != -1 ? 0 : name.lastIndexOf('@');
+    var pluginIndex = name.lastIndexOf('!');
+    var versionIndex = (pluginIndex == -1 ? name : name.substr(0, pluginIndex)).lastIndexOf('@');
     if (versionIndex > 0) {
       var parts = name.substr(versionIndex + 1, name.length - versionIndex - 1).split('/');
       stripVersion = parts[0];
@@ -2086,7 +2013,7 @@ function versions(loader) {
     // run all other normalizers first
     return Promise.resolve(loaderNormalize.call(this, name, parentName, parentAddress)).then(function(normalized) {
       
-      var index = normalized.indexOf('!') != -1 ? 0 : normalized.indexOf('@');
+      var index = normalized.indexOf('@');
 
       // if we stripped a version, and it still has no version, add it back
       if (stripVersion && (index == -1 || index == 0)) {
@@ -2175,8 +2102,6 @@ function versions(loader) {
 function depCache(loader) {
   loader.depCache = loader.depCache || {};
 
-  loader._extensions.push(depCache);
-
   loaderLocate = loader.locate;
   loader.locate = function(load) {
     var loader = this;
@@ -2194,10 +2119,9 @@ function depCache(loader) {
   }
 }
   
-core(System);
 meta(System);
 register(System);
-es6(System);
+core(System);
 global(System);
 cjs(System);
 amd(System);
@@ -2206,7 +2130,14 @@ plugins(System);
 bundles(System);
 versions(System);
 depCache(System);
-
+  if (!System.paths['@traceur'])
+    System.paths['@traceur'] = $__curScript && $__curScript.getAttribute('data-traceur-src')
+      || ($__curScript && $__curScript.src 
+        ? $__curScript.src.substr(0, $__curScript.src.lastIndexOf('/') + 1) 
+        : System.baseURL + (System.baseURL.lastIndexOf('/') == System.baseURL.length - 1 ? '' : '/')
+        ) + 'traceur.js';
+  if (!System.paths['@traceur-runtime'])
+    System.paths['@traceur-runtime'] = $__curScript && $__curScript.getAttribute('data-traceur-runtime-src') || System.paths['@traceur'].replace(/\.js$/, '-runtime.js');
 };
 
 var $__curScript, __eval;
@@ -2310,4 +2241,5 @@ var $__curScript, __eval;
   }
 })();
 
-})(typeof window != 'undefined' ? window : (typeof WorkerGlobalScope != 'undefined' ? self : global));
+})(typeof window != 'undefined' ? window : (typeof WorkerGlobalScope != 'undefined' ?
+                                           self : global));

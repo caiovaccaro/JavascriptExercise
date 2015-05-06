@@ -4,7 +4,8 @@ System.config({
   "paths": {
     "*": "*.js",
     "github:*": "jspm_packages/github/*.js",
-    "npm:*": "jspm_packages/npm/*.js"
+    "npm:*": "jspm_packages/npm/*.js",
+    "app/*": "lib/*.js"
   }
 });
 
@@ -12,6 +13,8 @@ System.config({
   "map": {
     "jquery": "github:components/jquery@2.1.3",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
+    "lodash": "npm:lodash@3.8.0",
+    "q": "npm:q@2.0.3",
     "react": "npm:react@0.13.1",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.1"
@@ -27,6 +30,9 @@ System.config({
     },
     "github:jspm/nodelibs-crypto@0.1.0": {
       "crypto-browserify": "npm:crypto-browserify@3.9.14"
+    },
+    "github:jspm/nodelibs-domain@0.1.0": {
+      "domain-browser": "npm:domain-browser@1.1.4"
     },
     "github:jspm/nodelibs-events@0.1.0": {
       "events-browserify": "npm:events-browserify@0.0.1"
@@ -64,6 +70,10 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "module": "github:jspm/nodelibs-module@0.1.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:asap@2.0.3": {
+      "domain": "github:jspm/nodelibs-domain@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:asn1.js@1.0.3": {
@@ -190,6 +200,9 @@ System.config({
       "randombytes": "npm:randombytes@2.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
+    "npm:domain-browser@1.1.4": {
+      "events": "github:jspm/nodelibs-events@0.1.0"
+    },
     "npm:elliptic@1.0.1": {
       "bn.js": "npm:bn.js@1.3.0",
       "brorand": "npm:brorand@1.0.5",
@@ -265,6 +278,9 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.1",
       "source-map": "npm:source-map@0.1.31"
     },
+    "npm:lodash@3.8.0": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
     "npm:miller-rabin@1.1.5": {
       "bn.js": "npm:bn.js@1.3.0",
       "brorand": "npm:brorand@1.0.5"
@@ -327,6 +343,12 @@ System.config({
     },
     "npm:q@1.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:q@2.0.3": {
+      "asap": "npm:asap@2.0.3",
+      "pop-iterate": "npm:pop-iterate@1.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "weak-map": "npm:weak-map@1.0.5"
     },
     "npm:randombytes@2.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

@@ -1,8 +1,14 @@
-import $ from 'jquery';
-import React from 'react';
-import Mediator from '../lib/mediator';
+import $ from 'jquery'
+import Q from 'q'
+import _ from 'lodash'
+import React from 'react'
+import Mediator from '../lib/mediator'
 
-var Menu = React.createClass({
+var deferred, Menu
+
+deferred = Q.defer()
+
+Menu = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
@@ -14,6 +20,7 @@ var Menu = React.createClass({
       dataType: 'json',
       success: function(data) {
         this.setState({data: data});
+        deferred.resolve()
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -22,14 +29,6 @@ var Menu = React.createClass({
   },
   handleClick: function(event) {
     if(!event.currentTarget.dataset.route) return false;
-    
-    var links = document.querySelectorAll('#menu a.active');
-
-    for (var i = links.length - 1; i >= 0; i--) {
-      links[i].className = '';
-    };
-
-    event.currentTarget.className = 'active';
 
     Mediator.publish('menuClick', {
       route: event.currentTarget.dataset.route,
@@ -42,21 +41,31 @@ var Menu = React.createClass({
 
     var _this = this,
       data = this.props.data ? this.props.data : this.state.data.menu,
-      menu = data.map(function(item) {
-        item.path = '#!' + item.path;
+      menu
 
-        var link = item.route ?
-                    <a href={item.path} data-route={item.route} data-path={item.path} onClick={_this.handleClick}>{item.text}</a> :
-                    <a href="#" onClick={_this.handleClick}>{item.text}</a>;
+    data = _.filter(data, function(item) {
+      return item.status === 'enabled' || item.status === 'dropdown'
+    })
 
-        var dropdown = item.status === 'dropdown' ?
-                        <Menu data={item.menu}/> :
-                        null;
+    menu = data.map(function(item) {
+      var link, dropdown
 
-        return (
-          <li className={item.status}>{link}{dropdown}</li>
-        );
-      });
+      if(item.status === 'dropdown' && !_.filter(item.menu, { status: 'enabled' }).length) return false
+
+      item.path = '#!' + item.path;
+
+      link = item.route ?
+              <a href={item.path} data-route={item.route} data-path={item.path} onClick={_this.handleClick}>{item.text}</a> :
+              <a href="#" onClick={_this.handleClick}>{item.text}</a>;
+
+      dropdown = item.status === 'dropdown' ?
+                  <Menu data={item.menu}/> :
+                  null;
+
+      return (
+        <li className={item.status}>{link}{dropdown}</li>
+      );
+    });
 
     return (
       <ul>{menu}</ul>
@@ -64,7 +73,13 @@ var Menu = React.createClass({
   }
 });
 
-React.render(
-  <Menu url="api/menu/data.json"/>,
-  document.getElementById('menu')
-);
+function renderMenu() {
+  Q(React.render(
+    <Menu url="api/menu/data.json"/>,
+    document.getElementById('menu')
+  ))
+
+  return deferred.promise
+}
+
+export default renderMenu

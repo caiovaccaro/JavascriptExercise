@@ -1,1 +1,3 @@
-import './menu.jsx!';
+import renderMenu from './menu.jsx!';
+
+export default renderMenu
