@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
+	<!-- TODO: load templates dynamically app.js -->
 	<script type="text/x-handlebars" id="page">
 		<h1>{{model.title}}</h1>
 	</script>
@@ -43,28 +44,24 @@
 			</nav>
 		</aside>
 		<section class="content">
-    		{{outlet}}
+			{{outlet}}
 		</section>
 	</script>
 
-	<!-- TODO: implement sane project framework -->
-	<script src="/public/js/lodash.js"></script>
-	<script src="/public/js/jquery-1.10.2.js"></script>
-	<script src="/public/js/ember-template-compiler.js"></script>
-	<script src="/public/js/ember.debug.js"></script>
+	<script src="/public/js/system/system.js"></script>
 	
-	<script src="/app/models/helper.js"></script>
+	<!-- TODO: load requirements inside app.js -->
+	<script src="/public/js/jquery/jquery-1.10.2.js"></script>
+	<script src="/public/js/ember/ember-template-compiler.js"></script>
+	<script src="/public/js/ember/ember.debug.js"></script>
 	
-	<script src="/app/app.js"></script>
-	
-	<script src="/app/models/index.js"></script>
-	<script src="/app/routes/index.js"></script>
-	
-	<script src="/app/models/menu.js"></script>
-	<script src="/app/routes/application.js"></script>
-	
-	<script src="/app/models/page.js"></script>
-	<script src="/app/routes/page.js"></script>
+	<!-- app code -->
+	<script src="/app/config.js"></script>	
+	<script>
+		System.import('app/app').then(function(App){
+			window.App = App.init();
+		})
+	</script>
 	
 </body>
 </html>

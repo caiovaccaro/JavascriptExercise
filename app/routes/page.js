@@ -1,5 +1,7 @@
-App.PageRoute = Ember.Route.extend({
+import Page from 'models/page';
+
+export default Ember.Route.extend({
 	model: function(params) {
-		return App.Page(params.page_url)
+		return Page(params.page_url)
 	}
 });

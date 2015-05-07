@@ -1,3 +1,5 @@
-App.IndexRoute = Ember.Route.extend({
-	model: App.Index
+import Index from 'models/index';
+
+export default Ember.Route.extend({
+	model: Index
 });

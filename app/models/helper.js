@@ -1,7 +1,7 @@
 // async, promise based, framework agnostic, Model adapter, with pseudourl mangling
 
 // common methods
-var ModelHelper = function(){
+export default function(){
 	this.addMethods = function(data){
 		var findPropInObject = function(object, prop, value){
 			return (object[prop] === value) ? object : (object.menu ? findProp(object.menu, prop, value) : false)
@@ -66,4 +66,3 @@ var ModelHelper = function(){
 
 	return this;	
 };
-

@@ -1,7 +1,8 @@
+import ModelHelper from 'models/helper';
 
-var MenuModel = new ModelHelper();
+var Model = new ModelHelper();
 
-MenuModel.filter = function(data){
+Model.filter = function(data){
 	var removeDisabled = function(object){
 		return _.filter(object, function(link){
 			if(link.menu){
@@ -13,7 +14,7 @@ MenuModel.filter = function(data){
 	return removeDisabled(data)
 }
 
-MenuModel.create = function(JSON_CALL){
+Model.create = function(JSON_CALL){
 	return Promise
 		.resolve(JSON_CALL)
 		.then(this.get('menu'))
@@ -21,8 +22,8 @@ MenuModel.create = function(JSON_CALL){
 		.then(this.process)
 };
 
-App.Menu = function(){
+export default function(){
 	var url = '/api/menu/data.json';
-	var JSON_CALL = jQuery.getJSON(url)
-	return MenuModel.create(JSON_CALL)
-}
+	var JSON_CALL = jQuery.getJSON(url);
+	return Model.create(JSON_CALL);
+};
