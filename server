@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+var SPA = require('spa-server');
+
+var server = SPA.create({
+	path: __dirname,
+	fallback: '/index.html'
+});
+
+server.start();
