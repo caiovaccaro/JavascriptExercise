@@ -14,7 +14,7 @@ Q(renderMenu()).then(function() {
 		status: firstMenuLinkEl.parentNode.className
 	}
 
-	Q(ViewsLoader.receiver(firstMenuLinkData)).then(function() {
+	Q(Mediator.publish('menuClick', firstMenuLinkData)).then(function() {
 		document.body.className = 'ready'
 	})
 })
