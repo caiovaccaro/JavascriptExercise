@@ -1,13 +1,15 @@
-// async, promise based, framework agnostic, Model adapter, with url mangling
-var PageModel = new ModelHelper();
-PageModel.create = function(JSON_CALL){
+import ModelHelper from 'models/helper';
+
+var Model = new ModelHelper();
+
+Model.create = function(JSON_CALL){
 	return Promise
 		.resolve(JSON_CALL)
 		.then(this.get('index'))
 };
 
-App.Page = function(url){
+export default function(url){
 	var url = '/api/'+url+'/data.json';
 	var JSON_CALL = jQuery.getJSON(url)
-	return PageModel.create(JSON_CALL)
-}
+	return Model.create(JSON_CALL)
+};

@@ -1,9 +1,15 @@
-App = Ember.Application.create();
+import _ from 'lodash';
 
-App.Router.map(function() {
-	this.route('page', { path: '/*page_url' });
-});
+import setRouter from 'app/router';
+import * as Routes from 'routes/all';
 
-App.Router.reopen({
-  location: 'auto'
-});
+var init =  function(){
+	var App = Ember.Application.create();
+	setRouter(App);
+	_.assign(App, Routes);
+	
+	return App;
+};
+
+
+export { init }

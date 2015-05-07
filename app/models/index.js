@@ -1,3 +1,3 @@
-App.Index = function(){
+export default function(){
 	return {title: "JavascripExercise"};
 }
