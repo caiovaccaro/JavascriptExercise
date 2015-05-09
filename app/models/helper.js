@@ -1,6 +1,5 @@
-// async, promise based, framework agnostic, Model adapter, with pseudourl mangling
+import getJSON from 'ajax/json';
 
-// common methods
 export default function(){
 	this.addMethods = function(data){
 		var findPropInObject = function(object, prop, value){
@@ -50,10 +49,12 @@ export default function(){
 		return process(data)
 	}
 
-	this.get = function(prop){
-		return function(data){
-			return data[prop];
-		}
+
+	this.get = prop => data => data[prop];
+
+	this.fromJSON = function(url){
+		var JSON_CALL = getJSON(url);
+		return this.create(JSON_CALL);
 	}
 
 	this.wrap = function(prop){
@@ -64,5 +65,5 @@ export default function(){
 		}
 	}
 
-	return this;	
+	return this;
 };

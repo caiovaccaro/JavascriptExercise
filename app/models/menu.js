@@ -1,5 +1,5 @@
 import ModelHelper from 'models/helper';
-import getJSON from 'ajax/json';
+import _ from 'lodash';
 
 var Model = new ModelHelper();
 
@@ -22,8 +22,4 @@ Model.create = function(JSON_CALL){
 		.then(this.process)
 };
 
-export default function(){
-	var url = '/api/menu/data.json';
-	var JSON_CALL = getJSON(url);
-	return Model.create(JSON_CALL);
-};
+export default () => Model.fromJSON('/api/menu/data.json')

@@ -1,3 +1,1 @@
-export default function(){
-	return {title: "JavascripExercise"};
-}
+export default () => ({title: "JavascripExercise"});
