@@ -1,4 +1,5 @@
 import ModelHelper from 'models/helper';
+import getJSON from 'ajax/json';
 
 var Model = new ModelHelper();
 
@@ -15,8 +16,7 @@ Model.filter = function(data){
 }
 
 Model.create = function(JSON_CALL){
-	return Promise
-		.resolve(JSON_CALL)
+	return JSON_CALL
 		.then(this.get('menu'))
 		.then(this.filter)
 		.then(this.process)
@@ -24,6 +24,6 @@ Model.create = function(JSON_CALL){
 
 export default function(){
 	var url = '/api/menu/data.json';
-	var JSON_CALL = jQuery.getJSON(url);
+	var JSON_CALL = getJSON(url);
 	return Model.create(JSON_CALL);
 };
