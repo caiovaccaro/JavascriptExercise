@@ -9,7 +9,7 @@ export default function(input){
 		status = status!=="invalid" && (data === undefined)     && "invalid";
 		status = status!=="invalid" && (data instanceof Object) && "valid";
 		parsed = status==="valid"   && (data instanceof Object) && data;
-		
+
 		if( status!=="invalid" && status!=="valid" ){
 			try{
 				parsed = JSON.parse(data);
