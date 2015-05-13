@@ -1,4 +1,4 @@
-import ModelHelper from 'models/helper';
+import ModelHelper from 'helpers/model';
 
 var Model = new ModelHelper();
 

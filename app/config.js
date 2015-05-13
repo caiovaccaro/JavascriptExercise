@@ -2,6 +2,7 @@ System.config({
 	transpiler: 'babel',
 	baseURL: '/public/js/',
 	paths: {
+		'helpers/*': '/app/helpers/*.js',
 		'routes/*': '/app/routes/*.js',
 		'models/*': '/app/models/*.js',
 		'app/*': '/app/*.js'
