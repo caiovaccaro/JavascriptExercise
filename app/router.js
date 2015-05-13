@@ -7,7 +7,7 @@ export default {
 			this.route('page', { path: '/*page_url' });
 		});
 		this.App.Router.reopen({
-		  location: 'auto'
+			location: 'auto'
 		});
 		return this
 	},

@@ -15,6 +15,5 @@ System.config({
 		'ember-template-compiler': 'ember/ember-template-compiler',
 		'ember/resolver': 'ember-resolver/ember-resolver',
 		'hbs': 'system/plugin-ember-hbs'
-		
 	}
 });

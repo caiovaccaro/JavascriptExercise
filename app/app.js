@@ -14,5 +14,4 @@ var init = function(){
 	return App;
 };
 
-
 export { init }
