@@ -8,52 +8,57 @@
 </head>
 <body>
 	<!-- TODO: load templates dynamically app.js -->
-	<script type="text/x-handlebars" id="page">
-		<h1>{{model.title}}</h1>
-	</script>
-	<script type="text/x-handlebars" id="menu">
-		{{#each item in model}}
-			<li>
-				{{#if item.url}}
-					{{#link-to 'page' item.url}}
-						{{item.text}}
-					{{/link-to}}
-				{{else}}
-					{{item.text}}
-				{{/if}}
-				{{#if item.menu}}
-					<ul>{{render "menu" item.menu}}</ul>
-				{{/if}}
-			</li>
-		{{/each}}
-	</script>
-	<script type="text/x-handlebars" id="index">
-		{{render "page" model}}
-	</script>
-	<script type="text/x-handlebars">
-		<aside class="sidebar">
-			<nav>
-				<ul>
+	<!-- TEMPLATES -->
+		<!-- TEMPLATE:page -->
+			<script type="text/x-handlebars" id="page">
+				<h1>{{model.title}}</h1>
+			</script>
+		<!-- TEMPLATE:menu -->
+			<script type="text/x-handlebars" id="menu">
+				{{#each item in model}}
 					<li>
-						{{#link-to 'index'}}
-							home
-						{{/link-to}}
+						{{#if item.url}}
+							{{#link-to 'page' item.url}}
+								{{item.text}}
+							{{/link-to}}
+						{{else}}
+							{{item.text}}
+						{{/if}}
+						{{#if item.menu}}
+							<ul>{{render "menu" item.menu}}</ul>
+						{{/if}}
 					</li>
-					{{partial "menu"}}
-				</ul>
-			</nav>
-		</aside>
-		<section class="content">
-			{{outlet}}
-		</section>
-	</script>
-
-	<script src="/public/js/system/system.js"></script>
-	<script src="/app/config.js"></script>
-	<script>
-		System.import('app/app').then(function(App){
-			window.App = App.init();
-		})
-	</script>
+				{{/each}}
+			</script>
+		<!-- TEMPLATE:index -->
+			<script type="text/x-handlebars" id="index">
+				{{render "page" model}}
+			</script>
+		<!-- TEMPLATE:application -->
+			<script type="text/x-handlebars">
+				<aside class="sidebar">
+					<nav>
+						<ul>
+							<li>
+								{{#link-to 'index'}}
+									home
+								{{/link-to}}
+							</li>
+							{{partial "menu"}}
+						</ul>
+					</nav>
+				</aside>
+				<section class="content">
+					{{outlet}}
+				</section>
+			</script>
+	<!-- APP -->
+		<script src="/public/js/system/system.js"></script>
+		<script src="/app/config.js"></script>
+		<script>
+			System.import('app/app').then(function(App){
+				window.App = App.init();
+			})
+		</script>
 </body>
 </html>
