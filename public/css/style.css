@@ -2,12 +2,13 @@
 	box-sizing: border-box;
 }
 
-html, body, .ember-view, .sidebar{
+html, body, .ember-view{
 	height: 100%;
 }
 .sidebar, .content{
 	float: left;
-	overflow: scroll;
+	overflow: auto;
+	height: 100%;
 }
 .sidebar{
 	position: relative;
