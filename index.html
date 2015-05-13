@@ -36,18 +36,10 @@
 			</script>
 		<!-- TEMPLATE:application -->
 			<script type="text/x-handlebars">
-				<aside class="sidebar">
-					<nav>
-						<ul>
-							<li>
-								{{#link-to 'index'}}
-									home
-								{{/link-to}}
-							</li>
-							{{partial "menu"}}
-						</ul>
-					</nav>
-				</aside>
+				<aside class="sidebar"><nav><ul>
+					<li>{{#link-to 'index'}}home{{/link-to}}</li>
+					{{partial "menu"}}
+				</ul></nav></aside>
 				<section class="content">
 					{{outlet}}
 				</section>
