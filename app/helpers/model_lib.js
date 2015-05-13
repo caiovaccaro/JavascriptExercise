@@ -25,26 +25,4 @@ var wrap = function(prop){
 	}
 }
 
-// legacy pseudoUrl resolution
-// TODO: delete this
-var enablePseudoUrl = function(data){
-	var findProp = function(array, prop, value){
-		var result = false
-		for(var i = 0; i < array.length; i++){
-			var object = array[i];
-			result = (object[prop] === value) ? object : (object.menu ? findProp(object.menu, prop, value) : false);
-			if(result){
-				break;
-			}
-		}
-		return result;
-	};
-
-	return {
-		data:     data,
-		find:     function(prop, value){return findProp(data, prop,   value)},
-		findUrl:  function(url        ){return findProp(data, 'url',  url  )}
-	};
-}
-
-export {process, wrap, enablePseudoUrl}
+export {process, wrap}
