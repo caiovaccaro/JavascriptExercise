@@ -16,7 +16,7 @@
 		<!-- TEMPLATE:menu -->
 			<script type="text/x-handlebars" id="menu">
 				{{#each item in model}}
-					<li>
+					<li data-status="{{ item.status }}">
 						{{#if item.url}}
 							{{#link-to 'page' item.url}}
 								{{item.text}}
