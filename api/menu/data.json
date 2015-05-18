@@ -1,16 +1,90 @@
 {
   "menu": [
     {
+      "text": "Welcome",
+      "route": "welcome",
+      "path": "welcome",
+      "status": "enabled"
+    },
+    {
       "text": "Discover",
       "route": "discover",
       "path": "discover",
-      "status": "enabled"
+      "status": "disabled"
     },
     {
       "text": "Activity",
       "route": "activity",
       "path": "activity",
-      "status": "enabled"
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "Everything",
+          "route": "activity",
+          "path": "activity/all",
+          "status": "enabled"
+        },
+        {
+          "text": "Friends",
+          "route": "activity",
+          "path": "activity/friends",
+          "status": "dropdown",
+          "menu": [
+            {
+              "text": "Listening now",
+              "route": "activity",
+              "path": "activity/friends/now",
+              "status": "enabled"
+            },
+            {
+              "text": "New songs",
+              "route": "activity",
+              "path": "activity/friends/new",
+              "status": "disabled"
+            }
+          ]
+        },
+        {
+          "text": "Worldwide",
+          "route": "activity",
+          "path": "activity/worldwide",
+          "status": "dropdown",
+          "menu": [
+            {
+              "text": "Listening now",
+              "route": "activity",
+              "path": "activity/worldwide/now",
+              "status": "disabled"
+            },
+            {
+              "text": "New songs",
+              "route": "activity",
+              "path": "activity/worldwide/new",
+              "status": "enabled"
+            }
+          ]
+        },
+        {
+          "text": "People near me",
+          "route": "activity",
+          "path": "activity/peoplenearme",
+          "status": "dropdown",
+          "menu": [
+            {
+              "text": "Listening now",
+              "route": "activity",
+              "path": "activity/peoplenearme/now",
+              "status": "disabled"
+            },
+            {
+              "text": "New songs",
+              "route": "activity",
+              "path": "activity/peoplenearme/new",
+              "status": "disabled"
+            }
+          ]
+        }
+      ]
     },
     {
       "text": "My Music",
@@ -44,9 +118,15 @@
           "text": "Invite",
           "route": "friends",
           "path": "friends/invite",
-          "status": "disabled"
+          "status": "enabled"
         }
       ]
+    },
+    {
+      "text": "Logout",
+      "route": "logout",
+      "path": "logout",
+      "status": "enabled"
     }
   ]
 }
