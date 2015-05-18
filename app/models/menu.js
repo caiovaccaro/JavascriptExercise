@@ -18,7 +18,7 @@ Model.filter = function(data){
 Model.create = function(JSON_CALL){
 	return JSON_CALL
 		.then(this.get('menu'))
-		.then(this.filter)
+		// .then(this.filter)
 		.then(this.process)
 };
 
