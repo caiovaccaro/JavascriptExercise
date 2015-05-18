@@ -1,1 +1,1 @@
-export default () => ({title: "JavascripExercise"});
+export default () => ({title: "JavascriptExercise"});
