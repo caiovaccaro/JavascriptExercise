@@ -6,7 +6,9 @@ var process = function(menu, _parent){
 		if(menu.hasOwnProperty(link)){
 			var item = menu[link]
 			if(item[path]){
-				item.url = ( (parent.url ? parent.url + '/' : '') + item[path] ).replace(' ', '-')
+				item.url = item[path];
+				//last API change depracated this function
+				// item.url = ( (parent.url ? parent.url + '/' : '') + item[path] ).replace(' ', '-')
 			}
 			if(item.menu){
 				process(item.menu, item)
