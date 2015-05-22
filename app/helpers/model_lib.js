@@ -1,20 +1,17 @@
 // generate url from nested object
 var process = function(menu, _parent){
 	var path = 'path'
-	var parent = _parent || {}
-	for (var link in menu){
-		if(menu.hasOwnProperty(link)){
-			var item = menu[link]
-			if(item[path]){
-				item.url = item[path];
-				//last API change depracated this function
-				// item.url = ( (parent.url ? parent.url + '/' : '') + item[path] ).replace(' ', '-')
-			}
-			if(item.menu){
-				process(item.menu, item)
-			}
+	var parent = _parent || {};
+	_.forOwn(menu, function(item, link){
+		if(item[path]){
+			item.url = item[path];
+			//last API change depracated this function
+			// item.url = ( (parent.url ? parent.url + '/' : '') + item[path] ).replace(' ', '-')
 		}
-	}
+		if(item.menu){
+			process(item.menu, item)
+		}
+	});
 	return menu
 }
 
