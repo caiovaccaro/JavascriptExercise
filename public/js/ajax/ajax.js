@@ -7,9 +7,10 @@ export default function(url, type){
 		request.onload = function(){
 			var serverOK = (this.status == 200 || this.status < 400);
 			if (serverOK){
-				return resolve({data: this.response, url: url});
+				return resolve({data: this.response, url: url, status: this.status});
 			}else{
 				var error = new Error("HTTP: " + request.status + ". url: " + url);
+				error.url = url;
 				return reject(error)
 
 			}
@@ -17,6 +18,7 @@ export default function(url, type){
 
 		request.onerror = function(){
 			var error = new Error("HTTP: " + request.status + ". url: " + url);
+			error.url = url;
 			return reject(error)
 		};
 

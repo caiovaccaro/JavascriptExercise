@@ -22,6 +22,7 @@ export default function(input){
 			return resolve(parsed);
 		}else{
 			var error = new Error("invalid JSON: " + url);
+			error.url = url;
 			return reject(error);
 		}
 	})
