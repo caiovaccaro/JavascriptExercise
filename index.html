@@ -9,9 +9,20 @@
 <body>
 	<!-- TODO: load templates dynamically app.js -->
 	<!-- TEMPLATES -->
+		<!-- TEMPLATE:error -->
+			<script type="text/x-handlebars" id="error">
+				<div class="page_error">
+					<h1>{{model.code}}</h1>
+					<pre>{{model.info}}</pre>
+				</div>
+			</script>
 		<!-- TEMPLATE:page -->
 			<script type="text/x-handlebars" id="page">
-				<h1>{{model.title}}</h1>
+				{{#if model.error}}
+					{{render "error" model}}
+				{{else}}
+					<h1>{{model.title}}</h1>
+				{{/if}}
 			</script>
 		<!-- TEMPLATE:menu -->
 			<script type="text/x-handlebars" id="menu">

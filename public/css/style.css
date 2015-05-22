@@ -31,3 +31,7 @@ html, body, .ember-view{
 	margin-left: -300px;
 	padding-left: 300px;
 }
+
+.page_error h1{
+	color: red;
+}
