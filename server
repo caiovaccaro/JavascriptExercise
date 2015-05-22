@@ -2,6 +2,6 @@
 require('spa-server')
 	.create({
 		path: __dirname,
-		fallback: '/index.html'
+		fallback: {'text/html' : '/index.html'}
 	})
 	.start();
