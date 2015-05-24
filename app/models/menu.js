@@ -19,6 +19,7 @@ Model.create = function(JSON_CALL){
 	return JSON_CALL
 		.then(this.get('menu'))
 		// .then(this.filter)
+		.then(this.order)
 		.then(this.process)
 };
 

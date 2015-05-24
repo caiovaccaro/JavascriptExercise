@@ -27,7 +27,7 @@
 		<!-- TEMPLATE:menu -->
 			<script type="text/x-handlebars" id="menu">
 				{{#each item in model}}
-					<li data-status="{{ item.status }}">
+					<li data-status="{{ item.status }}" data-closed="true" data-id="{{ item.id }}">
 						{{#if item.url}}
 							{{#link-to 'page' item.url}}
 								{{item.text}}
@@ -36,6 +36,7 @@
 							{{item.text}}
 						{{/if}}
 						{{#if item.menu}}
+							<button class="toggle" data-action="open" {{action 'expand' item.id target="view"}}></button>
 							<ul>{{render "menu" item.menu}}</ul>
 						{{/if}}
 					</li>
@@ -46,11 +47,22 @@
 				{{render "page" model}}
 			</script>
 		<!-- TEMPLATE:application -->
+			<script type="text/x-handlebars" id="sidebar">
+				{{! view wrapper aside.sidebar}}
+				<nav class="pages">
+					<ul>
+						{{render "menu" model}}
+					</ul>
+				</nav>
+				<nav class="pagination">
+					<div class="breadcrumb">loading...</div>
+					<button class="previous" {{action 'previous' target="view"}}>previous</button>
+					<button class="next" {{action 'next' target="view"}}>next</button>
+				</nav>
+			</script>
+		<!-- TEMPLATE:application -->
 			<script type="text/x-handlebars">
-				<aside class="sidebar"><nav><ul>
-					<li>{{#link-to 'index'}}home{{/link-to}}</li>
-					{{partial "menu"}}
-				</ul></nav></aside>
+				{{render 'sidebar' model}}
 				<section class="content">
 					{{outlet}}
 				</section>

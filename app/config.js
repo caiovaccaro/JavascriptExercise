@@ -5,7 +5,9 @@ System.config({
 		'helpers/*': '/app/helpers/*.js',
 		'routes/*': '/app/routes/*.js',
 		'models/*': '/app/models/*.js',
-		'app/*': '/app/*.js'
+		'views/*': '/app/views/*.js',
+		'app/*': '/app/*.js',
+		'ui/*': '/public/js/ui/*.js'
 	},
 	map:{
 		'lodash': 'lodash/lodash',

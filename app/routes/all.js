@@ -1,5 +1,5 @@
-import PageRoute from 'routes/page';
-import IndexRoute from 'routes/index';
-import ApplicationRoute from 'routes/application';
+import PageRoute from './page';
+import IndexRoute from './index';
+import ApplicationRoute from './application';
 
 export {PageRoute, ApplicationRoute, IndexRoute}
