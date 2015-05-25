@@ -1,20 +1,3 @@
-// generate url from nested object
-var process = function(menu, _parent){
-	var path = 'path'
-	var parent = _parent || {};
-	_.forOwn(menu, function(item, link){
-		if(item[path]){
-			item.url = item[path];
-			//last API change depracated this function
-			// item.url = ( (parent.url ? parent.url + '/' : '') + item[path] ).replace(' ', '-')
-		}
-		if(item.menu){
-			process(item.menu, item)
-		}
-	});
-	return menu
-}
-
 var enumerate = function(menu, _data){
 	var data = _data || {index: 1};
 	_.forOwn(menu, function(item, link){
@@ -36,4 +19,4 @@ var wrap = function(prop){
 	}
 }
 
-export {process, wrap, enumerate}
+export {wrap, enumerate}

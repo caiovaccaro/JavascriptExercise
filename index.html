@@ -28,8 +28,8 @@
 			<script type="text/x-handlebars" id="menu">
 				{{#each item in model}}
 					<li data-status="{{ item.status }}" data-closed="true" data-id="{{ item.id }}">
-						{{#if item.url}}
-							{{#link-to 'page' item.url}}
+						{{#if item.path}}
+							{{#link-to 'page' item.path}}
 								{{item.text}}
 							{{/link-to}}
 						{{else}}
