@@ -19,6 +19,7 @@ html, body, .ember-view{
 .sidebar nav.pages ul{
 	overflow: hidden;
 	padding-left: 30px;
+	transition: 0.5s ease-out;
 }
 .sidebar nav.pages li{
 	position: relative;
@@ -85,6 +86,21 @@ html, body, .ember-view{
 	background: gray;
 	color: black;
 }
+.sidebar nav.pagination .breadcrumb a,
+.sidebar nav.pagination .breadcrumb i,
+.sidebar nav.pagination .breadcrumb span{
+	text-indent: 0;
+	color: black;
+	font-style: normal;
+	display: inline-block;
+}
+.sidebar nav.pagination .breadcrumb a.active{
+	font-weight: bold;
+}
+.sidebar nav.pagination .breadcrumb i{
+	padding: 0 4px;
+}
+
 .sidebar nav.pagination button{
 	width: 50%;
 	height: 66px;

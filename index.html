@@ -33,7 +33,7 @@
 								{{item.text}}
 							{{/link-to}}
 						{{else}}
-							{{item.text}}
+							<span>{{item.text}}</span>
 						{{/if}}
 						{{#if item.menu}}
 							<button class="toggle" data-action="open" {{action 'expand' item.id target="view"}}></button>

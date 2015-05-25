@@ -116,7 +116,7 @@
 			this
 				.closeDropdownsExcept($parents)
 				.openDropdowns($parents)
-				.pagination.state();
+				.pagination.state($target);
 		},
 		
 		refresh: function(target){
@@ -183,9 +183,18 @@
 						return $target;
 					}
 				},
-				state: function(current){
-					var $anchors     = this.get.activeAnchors();
-					var currentIndex = this.get.currentIndex($anchors, current);
+				breadcrumb: function($target){
+					var $links = plugin.$element.find($target.parents()).find('>a, >span').clone();
+					var crumbs = [];
+					$links.each(function(){
+						crumbs.push(this)
+						crumbs.push("<i>&gt;</i>")
+					})
+					crumbs.pop();
+					$('.breadcrumb').empty().append(crumbs);
+					return this;
+				},
+				setupButtons: function($anchors, currentIndex){
 					this.$buttons.prop('disabled', false)
 					if(currentIndex == 0){
 						this.$previous.prop('disabled', true); //first
@@ -193,6 +202,14 @@
 					if(currentIndex == ($anchors.length -1)){
 						this.$next.prop('disabled', true); //last
 					}
+					return this;
+				},
+				state: function($target){
+					var $anchors     = this.get.activeAnchors();
+					var currentIndex = this.get.currentIndex($anchors, $target);
+					this.setupButtons($anchors, currentIndex)
+						.breadcrumb($target);
+					return this;
 				},
 				prev: function(current){
 					var $target = this.get.$prev(current);
@@ -224,12 +241,13 @@
 	};
 
 	$.fn[pluginName].defaults = {
-		active: 'a.active',
+		active: 'nav.pages a.active',
 		pagination: {
 			element: 'nav.pagination',
 			buttons: 'button',
 			previous: '.previous',
-			next: '.next'
+			next: '.next',
+			breadcrumb: '.breadcrumb'
 		}
 	};
 
