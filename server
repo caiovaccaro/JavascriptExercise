@@ -2,6 +2,7 @@
 require('spa-server')
 	.create({
 		path: __dirname,
+		port: process.env.PORT || 8888,
 		fallback: {'text/html' : '/index.html'}
 	})
 	.start();
