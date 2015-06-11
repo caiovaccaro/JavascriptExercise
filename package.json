@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/leonardodino/JavascriptExercise"
   },
+  "engines": {
+    "node": "0.12.x"
+  },
   "dependencies": {
     "spa-server": "^0.1.0"
   },
