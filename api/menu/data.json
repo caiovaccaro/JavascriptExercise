@@ -1,0 +1,132 @@
+{
+  "menu": [
+    {
+      "text": "Welcome",
+      "route": "welcome",
+      "path": "welcome",
+      "status": "enabled"
+    },
+    {
+      "text": "Discover",
+      "route": "discover",
+      "path": "discover",
+      "status": "disabled"
+    },
+    {
+      "text": "Activity",
+      "route": "activity",
+      "path": "activity",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "Everything",
+          "route": "activity",
+          "path": "activity/all",
+          "status": "enabled"
+        },
+        {
+          "text": "Friends",
+          "route": "activity",
+          "path": "activity/friends",
+          "status": "dropdown",
+          "menu": [
+            {
+              "text": "Listening now",
+              "route": "activity",
+              "path": "activity/friends/now",
+              "status": "enabled"
+            },
+            {
+              "text": "New songs",
+              "route": "activity",
+              "path": "activity/friends/new",
+              "status": "disabled"
+            }
+          ]
+        },
+        {
+          "text": "Worldwide",
+          "route": "activity",
+          "path": "activity/worldwide",
+          "status": "dropdown",
+          "menu": [
+            {
+              "text": "Listening now",
+              "route": "activity",
+              "path": "activity/worldwide/now",
+              "status": "disabled"
+            },
+            {
+              "text": "New songs",
+              "route": "activity",
+              "path": "activity/worldwide/new",
+              "status": "enabled"
+            }
+          ]
+        },
+        {
+          "text": "People near me",
+          "route": "activity",
+          "path": "activity/peoplenearme",
+          "status": "dropdown",
+          "menu": [
+            {
+              "text": "Listening now",
+              "route": "activity",
+              "path": "activity/peoplenearme/now",
+              "status": "disabled"
+            },
+            {
+              "text": "New songs",
+              "route": "activity",
+              "path": "activity/peoplenearme/new",
+              "status": "disabled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "My Music",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "Playlist 1",
+          "route": "playlist",
+          "path": "playlist/1",
+          "status": "disabled"
+        },
+        {
+          "text": "Playlist 2",
+          "route": "playlist",
+          "path": "playlist/2",
+          "status": "disabled"
+        }
+      ]
+    },
+    {
+      "text": "Friends",
+      "status": "dropdown",
+      "menu": [
+        {
+          "text": "All",
+          "route": "friends",
+          "path": "friends/all",
+          "status": "disabled"
+        },
+        {
+          "text": "Invite",
+          "route": "friends",
+          "path": "friends/invite",
+          "status": "enabled"
+        }
+      ]
+    },
+    {
+      "text": "Logout",
+      "route": "logout",
+      "path": "logout",
+      "status": "enabled"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>JavascriptExercise</title>
+	<link rel="stylesheet" href="/public/css/normalize.css">
+	<link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+	<!-- TODO: load templates dynamically app.js -->
+	<!-- TEMPLATES -->
+		<!-- TEMPLATE:error -->
+			<script type="text/x-handlebars" id="error">
+				<div class="page_error">
+					<h1>{{model.code}}</h1>
+					<pre>{{model.info}}</pre>
+				</div>
+			</script>
+		<!-- TEMPLATE:page -->
+			<script type="text/x-handlebars" id="page">
+				{{#if model.error}}
+					{{render "error" model}}
+				{{else}}
+					<h1>{{model.title}}</h1>
+				{{/if}}
+			</script>
+		<!-- TEMPLATE:menu -->
+			<script type="text/x-handlebars" id="menu">
+				{{#each item in model}}
+					<li data-status="{{ item.status }}" data-closed="true" data-id="{{ item.id }}">
+						{{#if item.path}}
+							{{#link-to 'page' item.path}}
+								{{item.text}}
+							{{/link-to}}
+						{{else}}
+							<span>{{item.text}}</span>
+						{{/if}}
+						{{#if item.menu}}
+							<button class="toggle" data-action="open" {{action 'expand' item.id target="view"}}></button>
+							<ul>{{render "menu" item.menu}}</ul>
+						{{/if}}
+					</li>
+				{{/each}}
+			</script>
+		<!-- TEMPLATE:index -->
+			<script type="text/x-handlebars" id="index">
+				{{render "page" model}}
+			</script>
+		<!-- TEMPLATE:application -->
+			<script type="text/x-handlebars" id="sidebar">
+				{{! view wrapper aside.sidebar}}
+				<nav class="pages">
+					<ul>
+						{{render "menu" model}}
+					</ul>
+				</nav>
+				<nav class="pagination">
+					<div class="breadcrumb">loading...</div>
+					<button class="previous" {{action 'previous' target="view"}}>previous</button>
+					<button class="next" {{action 'next' target="view"}}>next</button>
+				</nav>
+			</script>
+		<!-- TEMPLATE:application -->
+			<script type="text/x-handlebars">
+				{{render 'sidebar' model}}
+				<section class="content">
+					{{outlet}}
+				</section>
+			</script>
+	<!-- APP -->
+		<script src="/public/js/system/system.js"></script>
+		<script src="/app/config.js"></script>
+		<script>
+			System.import('app/app').then(function(App){
+				window.App = App.init();
+			})
+		</script>
+</body>
+</html>
